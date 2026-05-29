@@ -122,6 +122,17 @@ async fn stop_process(exec_name: String) -> Result<(), String> {
     }
 }
 
+#[tauri::command(rename_all = "snake_case")]
+async fn check_process_running(exec_name: String) -> Result<bool, String> {
+    let output = std::process::Command::new("tasklist")
+        .args(["/FI", &format!("IMAGENAME eq {}", exec_name)])
+        .output()
+        .map_err(|e| format!("Failed to execute tasklist: {}", e))?;
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    Ok(stdout.contains(&exec_name))
+}
+
 /// Usage: Calling from JS:
 /// ```javascript
 /// await invoke('connect_to_discord_rpc_3', json, 'connect' | 'disconnect');
@@ -224,7 +235,8 @@ pub fn run() {
             connect_to_discord_rpc_3,
             run_background_process,
             fetch_gamelist_gh_mirror,
-            fetch_gamelist_from_discord
+            fetch_gamelist_from_discord,
+            check_process_running
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
