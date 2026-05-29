@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, shallowRef, provide, nextTick, triggerRef } from 'vue';
+import { ref, computed, useTemplateRef, shallowRef, provide, nextTick, triggerRef, watch } from 'vue';
 // import gameListData from '../assets/gamelist.json';
 import { onClickOutside, refDebounced, tryOnMounted } from '@vueuse/core';
 import { useFuse } from '@vueuse/integrations/useFuse'
@@ -108,7 +108,33 @@ const fuseOptions = computed<UseFuseOptions<Game>>(() => ({
 const { results: searchResults } = useFuse(debouncedSearchQuery, gameDB, fuseOptions)
 
 // Selected games list
-const gameList = ref<Game[]>([]);
+const loadSavedGames = (): Game[] => {
+    const saved = localStorage.getItem("dqc_game_list");
+    if (!saved) return [];
+    try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+            return parsed.map((game: Game) => {
+                game.is_running = false;
+                if (game.executables && Array.isArray(game.executables)) {
+                    game.executables = game.executables.map((exe: GameExecutable) => ({
+                        ...exe,
+                        is_running: false
+                    }));
+                }
+                return game;
+            });
+        }
+    } catch (e) {
+        console.error("Failed to parse stored game list", e);
+    }
+    return [];
+};
+
+const gameList = ref<Game[]>(loadSavedGames());
+watch(gameList, (newVal) => {
+    localStorage.setItem("dqc_game_list", JSON.stringify(newVal));
+}, { deep: true });
 // const selectedGame = ref<Game | null>(null);
 const selectedGameId = ref<string | null | undefined>(null);
 
@@ -270,7 +296,7 @@ async function stopPlaying({game, executable}: {game: Game, executable: GameExec
     const gameUid = game.uid;
     
     currentlyPlaying.value = null;
-
+ 
     const gameToPlay = gameList.value.find(g => g.uid === gameUid);
     const executableItem = gameToPlay?.executables.find(exe => exe.name === executable.name);
     if (gameToPlay && executableItem) {
