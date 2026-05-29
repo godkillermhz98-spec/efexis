@@ -1,36 +1,38 @@
 <template>
-    <div class="text-gray-500 dark:text-gray-400">
-        <h3>
+    <div class="panel-container">
+        <h3 class="panel-title">
             The game has multiple platform executables. Please select one to launch:
         </h3>
 
-        <div class="text-xs mt-2">
+        <div class="executables-list">
             <div v-for="(executable) in filteredExecutables" :key="executable.name"
-                class="grid grid-cols-[auto_1fr_auto] gap-2 items-center mb-2 w-full">
-                <div class="w-14 max-w-[80px]">
-                    <div class="bg-gray-200 dark:bg-gray-700 rounded-full px-2 py-1 w-fit">
+                class="executable-row">
+                
+                <!-- OS Badge -->
+                <div class="os-badge-wrapper">
+                    <div class="os-badge">
                         {{ executable.os }}
                     </div>
                 </div>
 
-                <!-- Sections / Breadcrumbs must fade when too long -->
-                <div class="relative overflow-hidden ">
-                    <div class="flex flex-nowrap overflow-x-auto scrollbar-none max-w-full pr-4 fade-right">
+                <!-- Path Breadcrumbs -->
+                <div class="breadcrumbs-container">
+                    <div class="breadcrumbs-scroll scrollbar-none fade-right">
                         <div v-for="(section, i) in splitExecutableName(executable)" :key="i"
-                            class="text-center border border-gray-300 dark:border-gray-700 rounded-md px-2 py-1 mr-1 whitespace-nowrap">
+                            class="breadcrumb-segment">
                             <span>{{ section }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="justify-self-end">
-                    <button class="text-white rounded-md px-3 py-1"
-                    :class="[
-                        {
-                            'bg-blue-500 hover:bg-blue-600': !gameActions?.isExecutableRunning(executable),
-                            'bg-red-500 hover:bg-red-600': gameActions?.isExecutableRunning(executable),
-                        },
-                    ]"
+                <!-- Action Button -->
+                <div class="action-button-wrapper">
+                    <button 
+                        class="action-btn"
+                        :class="{
+                            'btn-play': !gameActions?.isExecutableRunning(executable),
+                            'btn-stop': gameActions?.isExecutableRunning(executable),
+                        }"
                         @click="handleLaunch(executable)"
                     >
                         {{ gameActions?.isExecutableRunning(executable) ? 'Stop' : 'Play' }}
@@ -143,6 +145,119 @@ function handleLaunch(executable: GameExecutable) {
 </script>
 
 <style scoped>
+.panel-container {
+    background-color: #1a1a24;
+    border: 1px solid #2e2e3d;
+    border-radius: 8px;
+    padding: 16px;
+    color: #f2f3f5;
+}
+
+.panel-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #8e9297;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.executables-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.executable-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+}
+
+.os-badge-wrapper {
+    width: 56px;
+    max-width: 80px;
+    display: flex;
+}
+
+.os-badge {
+    background-color: #15151e;
+    border: 1px solid #2e2e3d;
+    color: #f2f3f5;
+    border-radius: 9999px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+}
+
+.breadcrumbs-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.breadcrumbs-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    padding-right: 16px;
+}
+
+.breadcrumb-segment {
+    text-align: center;
+    background-color: #15151e;
+    border: 1px solid #2e2e3d;
+    border-radius: 9999px;
+    padding: 2px 10px;
+    margin-right: 4px;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    color: #f2f3f5;
+}
+
+.breadcrumb-segment span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.action-button-wrapper {
+    justify-self: end;
+}
+
+.action-btn {
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.96);
+}
+
+.btn-play {
+    background-color: #5865f2;
+}
+
+.btn-play:hover {
+    background-color: #4752c4;
+}
+
+.btn-stop {
+    background-color: #ed4245;
+}
+
+.btn-stop:hover {
+    background-color: #c93b3e;
+}
+
 .fade-right {
     -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
     mask-image: linear-gradient(to right, black 85%, transparent 100%);
