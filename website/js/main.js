@@ -844,6 +844,8 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
+  const contactInbox = 'technicallyprsent@gmail.com';
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -864,7 +866,21 @@ function initContactForm() {
     });
 
     if (valid) {
-      showToast('Message sent! We\'ll get back to you soon.');
+      const name = form.querySelector('#contactName')?.value.trim() || 'Website visitor';
+      const email = form.querySelector('#contactEmail')?.value.trim() || '';
+      const subject = form.querySelector('#contactSubject')?.value.trim() || 'Efexis website contact';
+      const message = form.querySelector('#contactMessage')?.value.trim() || '';
+      const mailSubject = `[Efexis] ${subject}`;
+      const mailBody = [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        '',
+        message
+      ].join('\n');
+      const mailto = `mailto:${contactInbox}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+
+      showToast('Opening your email app to send the message.');
+      window.location.href = mailto;
       form.reset();
       // Remove all error states
       form.querySelectorAll('.form-field.error').forEach(el => el.classList.remove('error'));

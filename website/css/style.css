@@ -3340,9 +3340,109 @@ body.is-beyond-hero .section-rail {
   transform: translateX(4px);
 }
 
+.footer-related {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 3rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.footer-related > span {
+  color: rgba(250, 250, 250, 0.5);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.related-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: #FAFAFA;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.related-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.32rem;
+  height: 1px;
+  background: linear-gradient(90deg, #ff2f1f, #99ff00);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.related-link:hover,
+.related-link:focus,
+.related-link:focus-visible {
+  color: #ff5b4d;
+  transform: translateY(-1px);
+}
+
+.related-link:hover::after,
+.related-link:focus::after,
+.related-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.related-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 1rem);
+  width: min(360px, 78vw);
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0A0A0B;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48),
+              0 0 36px rgba(255, 47, 31, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px) scale(0.96);
+  transition: opacity 0.28s ease,
+              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 3;
+}
+
+.related-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 34%);
+}
+
+.related-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.related-link:hover .related-preview,
+.related-link:focus .related-preview,
+.related-link:focus-visible .related-preview {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding-top: 2rem;
   text-align: center;
   color: #555;
