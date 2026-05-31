@@ -68,6 +68,29 @@ body {
   --scroll-velocity: 0;
 }
 
+main > section,
+main > header {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+main > header.hero {
+  contain-intrinsic-size: auto 100vh;
+}
+
+main > section:not(.is-section-visible) *,
+main > section:not(.is-section-visible)::before,
+main > section:not(.is-section-visible)::after,
+main > section:not(.is-section-visible) *::before,
+main > section:not(.is-section-visible) *::after,
+main > header:not(.is-section-visible) *,
+main > header:not(.is-section-visible)::before,
+main > header:not(.is-section-visible)::after,
+main > header:not(.is-section-visible) *::before,
+main > header:not(.is-section-visible) *::after {
+  animation-play-state: paused !important;
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -400,7 +423,6 @@ body.is-beyond-hero .section-rail {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
-  animation: grainShift 8s steps(10) infinite;
 }
 
 /* ============================================================
@@ -665,12 +687,19 @@ body.is-beyond-hero .section-rail {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: orbitSpin 2.8s linear infinite;
+  animation-play-state: paused;
 }
 
 .shiny-cta:hover .button-orbit,
 .btn-secondary:hover .button-orbit,
 .faq-question:hover .button-orbit {
   opacity: 1;
+}
+
+.shiny-cta:hover .button-orbit::before,
+.btn-secondary:hover .button-orbit::before,
+.faq-question:hover .button-orbit::before {
+  animation-play-state: running;
 }
 
 .button-spark {
@@ -850,7 +879,6 @@ body.is-beyond-hero .section-rail {
   background-size: 72px 72px;
   mask-image: radial-gradient(ellipse at 50% 40%, #000 0%, transparent 68%);
   opacity: calc(0.45 * var(--hero-fade));
-  animation: gridDrift 18s linear infinite;
 }
 
 /* Hero background layers */
@@ -1380,13 +1408,17 @@ body.is-beyond-hero .section-rail {
   opacity: 0;
   transform: translateY(24px) scale(0.98);
   filter: blur(10px);
-  animation: reviewFloatCycle 20s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
-.hero-review-slide:nth-child(2) { animation-delay: 5s; }
-.hero-review-slide:nth-child(3) { animation-delay: 10s; }
-.hero-review-slide:nth-child(4) { animation-delay: 15s; }
+.hero-review-slide.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
 
 .hero-review-avatar,
 .review-avatar {
@@ -2858,6 +2890,73 @@ body.is-beyond-hero .section-rail {
   column-gap: 1rem;
 }
 
+.reviews-page-cta,
+.reviews-load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.reviews-page-hero {
+  min-height: 58vh;
+  padding: 9rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 14%, rgba(153, 255, 0, 0.13), transparent 44%),
+    radial-gradient(ellipse at 14% 72%, rgba(139, 220, 255, 0.08), transparent 36%),
+    #0A0A0B;
+}
+
+.reviews-page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 20%, rgba(153, 255, 0, 0.045) 20.2%, transparent 20.5% 72%, rgba(139, 220, 255, 0.04) 72.2%, transparent 72.5%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 104px);
+  opacity: 0.72;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+}
+
+.reviews-page-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(860px, calc(100% - 2rem));
+}
+
+.reviews-page-title {
+  margin: 0;
+  color: #FAFAFA;
+  font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.reviews-page-sub {
+  max-width: 660px;
+  margin: 1.2rem auto 0;
+  color: #A5A5A9;
+  font-size: 1.04rem;
+  line-height: 1.75;
+}
+
+.reviews-page {
+  padding-top: 6rem;
+}
+
+.review-count-label {
+  color: rgba(250, 250, 250, 0.56);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
 .community-review {
   display: inline-block;
   width: 100%;
@@ -3687,6 +3786,7 @@ body.is-beyond-hero .section-rail {
   .process,
   .faq,
   .reviews-section,
+  .reviews-page-hero,
   .about-section,
   .cta-section {
     padding: 5rem 0;
@@ -3787,6 +3887,51 @@ body.is-beyond-hero .section-rail {
   .menu-link {
     font-size: 2rem;
   }
+}
+
+.optimized-visuals .ambient-system,
+.optimized-visuals .hero-network,
+.optimized-visuals .hero-orbitals,
+.optimized-visuals .hero-bg-light,
+.optimized-visuals .hero-bg-light-2,
+.optimized-visuals .cursor-glow,
+.optimized-visuals .cursor-ring,
+.optimized-visuals .cursor-dot,
+.performance-lite .grain,
+.performance-lite .ambient-system,
+.performance-lite .hero-network,
+.performance-lite .hero-orbitals,
+.performance-lite .cta-orbitals,
+.performance-lite .cursor-glow,
+.performance-lite .cursor-ring,
+.performance-lite .cursor-dot {
+  display: none;
+}
+
+.optimized-visuals .signal-track,
+.optimized-visuals .nav-status-dot,
+.optimized-visuals .btn-dot,
+.optimized-visuals .hero-word-underline path,
+.optimized-visuals .hero-stats {
+  animation: none !important;
+}
+
+.optimized-visuals .hero-word-underline path {
+  stroke-dashoffset: 0;
+}
+
+.optimized-visuals .hero-stats {
+  opacity: 1;
+  transform: none;
+}
+
+.performance-lite .review-card,
+.performance-lite .service-card,
+.performance-lite .process-card,
+.performance-lite .about-stat-card,
+.performance-lite .cta-form {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

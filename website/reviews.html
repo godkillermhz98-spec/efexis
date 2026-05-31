@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efexis Reviews â€” Community Feedback</title>
+    <meta name="description" content="Read featured Efexis reviews and community-style feedback samples in a lightweight, batch-loaded review wall.">
+    <meta name="author" content="Efexis">
+    <meta name="theme-color" content="#0A0A0B">
+    <link rel="icon" href="assets/images/efexis-logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=20260531-opt1">
+</head>
+<body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="page-progress" aria-hidden="true"><span></span></div>
+    <div class="ambient-system" aria-hidden="true">
+        <span class="ambient-ring ambient-ring--one"></span>
+        <span class="ambient-ring ambient-ring--two"></span>
+        <span class="ambient-beam ambient-beam--one"></span>
+        <span class="ambient-beam ambient-beam--two"></span>
+    </div>
+
+    <nav class="nav" aria-label="Primary">
+        <div class="nav-inner">
+            <a class="nav-brand" aria-label="Efexis home" href="index.html">
+                <span class="brand-logo-shell">
+                    <img src="assets/images/efexis-logo.svg" alt="" class="brand-logo-img">
+                </span>
+                <span class="brand-name">Efexis</span>
+            </a>
+            <div class="nav-status" aria-hidden="true">
+                <span class="nav-status-dot"></span>
+                <span>Reviews loaded lightly</span>
+            </div>
+            <a class="shiny-cta shiny-cta--compact" href="index.html#contact">
+                <span>Get Started&nbsp;&nbsp;â†’</span>
+            </a>
+            <button type="button" id="burgerBtn" class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
+        <div class="menu-overlay-inner">
+            <a href="index.html#features" class="menu-link" style="--i:0">Features</a>
+            <a href="index.html#about" class="menu-link" style="--i:1">About</a>
+            <a href="index.html#process" class="menu-link" style="--i:2">Process</a>
+            <a href="index.html#faq" class="menu-link" style="--i:3">FAQ</a>
+            <a href="index.html#contact" class="menu-link" style="--i:4">Contact</a>
+        </div>
+    </div>
+
+    <main>
+        <header class="reviews-page-hero" id="home">
+            <div class="reviews-page-hero-inner">
+                <p class="reviews-eyebrow reveal">
+                    <span class="eyebrow-bar" aria-hidden="true"></span>
+                    <span class="eyebrow-tag">[Reviews]</span>Community feedback
+                </p>
+                <h1 class="reviews-page-title reveal">Review wall.</h1>
+                <p class="reviews-page-sub reveal">The strongest testimonials load first. Community samples appear in small batches so the page stays responsive while still giving visitors depth.</p>
+            </div>
+        </header>
+
+        <section class="reviews-section reviews-page" id="reviews">
+            <div class="reviews-bg" aria-hidden="true"></div>
+            <div class="reviews-inner">
+                <header class="reviews-head">
+                    <p class="reviews-eyebrow reveal">
+                        <span class="eyebrow-bar" aria-hidden="true"></span>
+                        <span class="eyebrow-tag">[01]</span>Featured reviews
+                    </p>
+                    <h2 class="reviews-title reveal">Trusted by <em>quest hunters.</em></h2>
+                    <p class="reviews-desc reveal">These four reviews stay visible immediately because they carry the most useful proof for new visitors.</p>
+                </header>
+
+                <div class="featured-reviews">
+                    <article class="review-card featured-review reveal reveal-delay-1">
+                        <img src="assets/images/Pfp of customers/Dr Sagar asthana.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Doctor Sagar Asthana</h3>
+                                    <p>A healthcare entrepreneur located in Lucknow (private clinic)</p>
+                                </div>
+                                <span class="star-rating" aria-label="5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">I wanted to get the latest Discord game rewards, but my SSD is completely full and I couldn't download a 70GB game just to play for 15 minutes. This app worked perfectly. It generated a tiny 250kb dummy file, Discord detected it instantly, and I got my quest reward hassle-free. Brilliant tool!</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-2">
+                        <img src="assets/images/Pfp of customers/Grace maharjan.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Grace Maharjan</h3>
+                                    <p>Currently a student</p>
+                                </div>
+                                <span class="star-rating" aria-label="5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">I really wanted a weapon skin reward from a new quest, but I refuse to install games that use intrusive, kernel-level anti-cheats on my PC. This tool let me simulate the game presence without installing any questionable software. Super lightweight and clean.</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-3">
+                        <img src="assets/images/Pfp of customers/James shakya.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>James Shakya</h3>
+                                    <p>Aspiring software developer</p>
+                                </div>
+                                <span class="star-rating" aria-label="4.5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-half"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">Fantastic tool that does exactly what it says. Just a heads up for anyone downloading it: don't extract the folder into C:\Program Files\ or it will throw errors because it needs write permissions to create the dummy game files. Once I moved it to a custom folder, it worked smoothly on Windows 11.</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-4">
+                        <img src="assets/images/Pfp of customers/Rehan maharjan.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Rehan Maharjan</h3>
+                                    <p>Student and part-time data specialist for CloudFactory</p>
+                                </div>
+                                <span class="star-rating" aria-label="4 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-empty"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">The Windows application is solid and the Tauri/Rust tech stack makes it incredibly lightweight. However, I dual-boot into Linux and it's a bummer that it isn't supported here yet. Trying to run it through Wine is a pain because of the WebView2 dependency. Hoping the dev figures out Linux compatibility soon!</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="reviews-wall-head reveal">
+                    <span>Community-style feedback</span>
+                    <strong id="reviewCountLabel" class="review-count-label">0 of 120 community reviews shown</strong>
+                </div>
+                <div class="reviews-wall" id="communityReviewGrid" data-batch-size="10" aria-live="polite"></div>
+                <div class="reviews-load-more-wrap">
+                    <button type="button" id="loadMoreReviews" class="shiny-cta">
+                        <span>Show 10 more&nbsp;&nbsp;â†’</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <span class="footer-logo-shell">
+                            <img src="assets/images/efexis-logo.svg" alt="" class="footer-logo-img">
+                        </span>
+                        <span>Efexis</span>
+                    </a>
+                    <p class="footer-desc">Premium Discord quest automation made simple. Save time, earn rewards, and enjoy the experience.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sitemap</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#process">Process</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Efexis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js?v=20260531-opt1"></script>
+</body>
+</html>

@@ -15,11 +15,26 @@
  * 10. Parallax-lite on hero
  */
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const optimizedVisuals = true;
+const performanceLite = prefersReducedMotion.matches ||
+  Boolean(navigator.connection?.saveData) ||
+  (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+
+if (optimizedVisuals) {
+  document.documentElement.classList.add('optimized-visuals');
+}
+
+if (performanceLite) {
+  document.documentElement.classList.add('performance-lite');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initSectionRail();
   initScrollProgress();
   initKineticScroll();
+  initSmartSections();
   initAmbientSystem();
   initCursorGlow();
   initHeroNetwork();
@@ -245,9 +260,25 @@ function initKineticScroll() {
   }, { passive: true });
 }
 
+function initSmartSections() {
+  const sections = [...document.querySelectorAll('main > section, main > header')];
+  if (!sections.length || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('is-section-visible', entry.isIntersecting);
+    });
+  }, {
+    rootMargin: '20% 0px',
+    threshold: 0.01
+  });
+
+  sections.forEach(section => observer.observe(section));
+}
+
 function initAmbientSystem() {
   const layer = document.querySelector('.ambient-system');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = prefersReducedMotion.matches || performanceLite || optimizedVisuals;
   if (!layer || reduceMotion) return;
 
   const colors = [
@@ -256,7 +287,7 @@ function initAmbientSystem() {
     { color: '#b799ff', glow: 'rgba(183, 153, 255, 0.32)' }
   ];
 
-  Array.from({ length: 26 }, (_, index) => {
+  Array.from({ length: 8 }, (_, index) => {
     const particle = document.createElement('span');
     const palette = colors[index % colors.length];
     particle.className = 'ambient-particle';
@@ -278,7 +309,7 @@ function initAmbientSystem() {
    3. CURSOR GLOW
    =================================================================== */
 function initCursorGlow() {
-  if (!window.matchMedia('(pointer: fine)').matches) return;
+  if (performanceLite || optimizedVisuals || !window.matchMedia('(pointer: fine)').matches) return;
 
   const glow = document.createElement('div');
   glow.className = 'cursor-glow';
@@ -333,7 +364,7 @@ function initCursorGlow() {
 function initHeroNetwork() {
   const canvas = document.getElementById('heroNetwork');
   const hero = document.querySelector('.hero');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = prefersReducedMotion.matches || performanceLite || optimizedVisuals;
   if (!canvas || !hero || reduceMotion) return;
 
   const ctx = canvas.getContext('2d');
@@ -356,7 +387,7 @@ function initHeroNetwork() {
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const count = width < 760 ? 34 : 58;
+    const count = width < 760 ? 24 : 38;
     nodes = Array.from({ length: count }, (_, index) => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -595,7 +626,7 @@ function initReviewTicker() {
 
   let index = 0;
   let timer = null;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = prefersReducedMotion.matches;
 
   const show = (nextIndex) => {
     slides[index]?.classList.remove('is-active');
@@ -628,6 +659,51 @@ function initCommunityReviews() {
   const grid = document.getElementById('communityReviewGrid');
   if (!grid) return;
 
+  const loadButton = document.getElementById('loadMoreReviews');
+  const countLabel = document.getElementById('reviewCountLabel');
+  const batchSize = Number(grid.dataset.batchSize || 10);
+  const reviews = buildCommunityReviews(120);
+  let rendered = 0;
+
+  const updateLabel = () => {
+    if (countLabel) {
+      countLabel.textContent = `${Math.min(rendered, reviews.length)} of ${reviews.length} community reviews shown`;
+    }
+
+    if (loadButton) {
+      loadButton.hidden = rendered >= reviews.length;
+      loadButton.disabled = rendered >= reviews.length;
+    }
+  };
+
+  const renderBatch = () => {
+    const next = reviews.slice(rendered, rendered + batchSize);
+    const fragment = document.createDocumentFragment();
+
+    next.forEach((review, offset) => {
+      const card = document.createElement('article');
+      card.className = 'review-card community-review reveal';
+      card.style.setProperty('--reveal-order', Math.min(offset, 6));
+      card.innerHTML = reviewCardHtml(review);
+      fragment.appendChild(card);
+    });
+
+    rendered += next.length;
+    grid.appendChild(fragment);
+    requestAnimationFrame(() => {
+      grid.querySelectorAll('.community-review:not(.visible)').forEach(card => card.classList.add('visible'));
+    });
+
+    initInteractiveSurfaces();
+    initCardTilt();
+    updateLabel();
+  };
+
+  renderBatch();
+  loadButton?.addEventListener('click', renderBatch);
+}
+
+function buildCommunityReviews(total) {
   const names = [
     'Aarav K.', 'Maya P.', 'Nikhil R.', 'Sofia L.', 'Tenzin G.', 'Priya S.', 'Daniel M.', 'Ishaan V.',
     'Milan T.', 'Nora A.', 'Kabir D.', 'Leah C.', 'Samir B.', 'Anika R.', 'Rohan M.', 'Clara J.',
@@ -657,7 +733,37 @@ function initCommunityReviews() {
   ];
   const ratings = [5, 5, 5, 4.5, 4.5, 4, 5, 4.5, 5, 4, 4.5, 5];
 
-  const makeInitials = (name) => name
+  return Array.from({ length: total }, (_, index) => {
+    const base = comments[(index * 7) % comments.length];
+    const extra = index % 5 === 0
+      ? ' I also liked that the app did not force a complicated account flow or make me install extra launchers. It feels like a practical utility for people who just want the reward and want to move on.'
+      : '';
+
+    return {
+      name: names[index % names.length],
+      role: roles[(index * 3) % roles.length],
+      rating: ratings[(index * 5) % ratings.length],
+      text: base + extra
+    };
+  });
+}
+
+function reviewCardHtml(review) {
+  return `
+    <div class="community-review-head">
+      <span class="review-initials" aria-hidden="true">${escapeHtml(makeInitials(review.name))}</span>
+      <div class="community-review-meta">
+        <strong>${escapeHtml(review.name)}</strong>
+        <span>${escapeHtml(review.role)}</span>
+      </div>
+      ${stars(review.rating)}
+    </div>
+    <p class="review-text">${escapeHtml(review.text)}</p>
+  `;
+}
+
+function makeInitials(name) {
+  return name
     .replace('.', '')
     .split(' ')
     .filter(Boolean)
@@ -665,52 +771,28 @@ function initCommunityReviews() {
     .map(part => part[0])
     .join('')
     .toUpperCase();
+}
 
-  const escapeHtml = (value) => String(value)
+function escapeHtml(value) {
+  return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
 
-  const stars = (rating) => {
-    const full = Math.floor(rating);
-    const half = rating % 1 !== 0;
-    const empty = 5 - full - (half ? 1 : 0);
-    return `
-      <span class="star-rating" aria-label="${rating} out of 5 stars">
-        ${'<span class="star star-full"></span>'.repeat(full)}
-        ${half ? '<span class="star star-half"></span>' : ''}
-        ${'<span class="star star-empty"></span>'.repeat(empty)}
-      </span>
-    `;
-  };
-
-  const cards = Array.from({ length: 120 }, (_, index) => {
-    const name = names[index % names.length];
-    const role = roles[(index * 3) % roles.length];
-    const rating = ratings[(index * 5) % ratings.length];
-    const base = comments[(index * 7) % comments.length];
-    const extra = index % 5 === 0
-      ? ` I also liked that the app did not force a complicated account flow or make me install extra launchers. It feels like a practical utility for people who just want the reward and want to move on.`
-      : '';
-
-    return `
-      <article class="review-card community-review reveal" style="--reveal-order:${Math.min(index % 8, 6)}">
-        <div class="community-review-head">
-          <span class="review-initials" aria-hidden="true">${escapeHtml(makeInitials(name))}</span>
-          <div class="community-review-meta">
-            <strong>${escapeHtml(name)}</strong>
-            <span>${escapeHtml(role)}</span>
-          </div>
-          ${stars(rating)}
-        </div>
-        <p class="review-text">${escapeHtml(base + extra)}</p>
-      </article>
-    `;
-  }).join('');
-
-  grid.innerHTML = cards;
+function stars(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 !== 0;
+  const empty = 5 - full - (half ? 1 : 0);
+  return `
+    <span class="star-rating" aria-label="${rating} out of 5 stars">
+      ${'<span class="star star-full"></span>'.repeat(full)}
+      ${half ? '<span class="star star-half"></span>' : ''}
+      ${'<span class="star star-empty"></span>'.repeat(empty)}
+    </span>
+  `;
 }
 
 /* ===================================================================
@@ -887,6 +969,9 @@ function initInteractiveSurfaces() {
   });
 
   surfaces.forEach(surface => {
+    if (surface.dataset.surfaceReady === 'true') return;
+    surface.dataset.surfaceReady = 'true';
+
     if (!surface.querySelector('.surface-sheen')) {
       const sheen = document.createElement('span');
       sheen.className = 'surface-sheen';
@@ -958,6 +1043,9 @@ function initButtonInteractions() {
   const controls = document.querySelectorAll('.shiny-cta, .btn-secondary, .faq-question');
 
   controls.forEach(control => {
+    if (control.dataset.buttonReady === 'true') return;
+    control.dataset.buttonReady = 'true';
+
     if (!control.querySelector('.button-orbit')) {
       const orbit = document.createElement('span');
       orbit.className = 'button-orbit';
@@ -1048,6 +1136,9 @@ function initMagneticButtons() {
   if (!window.matchMedia('(pointer: fine)').matches) return;
 
   magnets.forEach(btn => {
+    if (btn.dataset.magnetReady === 'true') return;
+    btn.dataset.magnetReady = 'true';
+
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
@@ -1113,6 +1204,9 @@ function initCardTilt() {
   if (!window.matchMedia('(pointer: fine)').matches) return;
 
   cards.forEach(card => {
+    if (card.dataset.tiltReady === 'true') return;
+    card.dataset.tiltReady = 'true';
+
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;

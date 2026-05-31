@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=20260531-opt1">
 </head>
 <body>
 
@@ -69,7 +69,7 @@
         <header class="hero" id="home">
             <canvas class="hero-network" id="heroNetwork" aria-hidden="true"></canvas>
             <div class="hero-bg">
-                <img alt="Efexis animated atmospheric background" fetchpriority="high" class="hero-bg-image" src="assets/images/hero-bg-animated.gif">
+                <img alt="Efexis atmospheric background" fetchpriority="high" class="hero-bg-image" src="assets/images/hero-bg.png">
                 <div class="hero-bg-light" aria-hidden="true"></div>
                 <div class="hero-bg-light-2" aria-hidden="true"></div>
                 <div class="hero-overlay" aria-hidden="true"></div>
@@ -172,7 +172,7 @@
                                 </div>
                             </article>
                         </div>
-                        <a href="#reviews" class="hero-review-link">Check other reviews</a>
+                        <a href="reviews.html" target="_blank" rel="noopener" class="hero-review-link">Check other reviews</a>
                     </div>
                     <span class="hero-stat-sep" aria-hidden="true"></span>
                     <div class="hero-stat">
@@ -506,7 +506,7 @@
                         <span class="eyebrow-tag">[06]</span>Reviews / Community feedback
                     </p>
                     <h2 class="reviews-title reveal">Trusted by <em>quest hunters.</em></h2>
-                    <p class="reviews-desc reveal">Featured testimonials are shown first, followed by generated community-style feedback samples that reflect common Efexis use cases.</p>
+                    <p class="reviews-desc reveal">Featured testimonials stay on the homepage for quick trust signals. The full review wall now opens separately so this page stays fast and polished.</p>
                 </header>
 
                 <div class="featured-reviews">
@@ -575,11 +575,11 @@
                     </article>
                 </div>
 
-                <div class="reviews-wall-head reveal">
-                    <span>Community-style feedback</span>
-                    <strong>120 review samples</strong>
+                <div class="reviews-page-cta reveal">
+                    <a href="reviews.html" target="_blank" rel="noopener" class="shiny-cta">
+                        <span>Open full review wall&nbsp;&nbsp;â†’</span>
+                    </a>
                 </div>
-                <div class="reviews-wall" id="communityReviewGrid" aria-live="polite"></div>
             </div>
         </section>
 
@@ -672,6 +672,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=20260531-opt1"></script>
 </body>
 </html>
