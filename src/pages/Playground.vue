@@ -1,48 +1,58 @@
 <template>
-    <div class="p-4 space-y-4 container mx-auto">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            @click="discordTest">Discord Test
+    <div class="diagnostics-page">
+        <header class="diagnostics-hero">
+            <div>
+                <p class="diagnostics-eyebrow">
+                    <span></span>
+                    [02] Diagnostics
+                </p>
+                <h1>Runtime signal desk</h1>
+            </div>
+            <button
+                class="discord-test-btn"
+                :class="{ connected: isConnected }"
+                @click="discordTest"
+            >
+                <span class="btn-led"></span>
+                {{ isConnected ? 'Disconnect RPC' : 'Discord Test' }}
+            </button>
+        </header>
 
-            connected: {{ isConnected }}
-        </button>
-
-        <!-- Logs Section -->
-        <div class="mt-4 p-4 border rounded text-gray-700 dark:text-gray-300 dark:border-gray-600">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-semibold mb-2">Logs</h2>
-                <button class="mt-2 font-bold py-1 px-3 rounded dark:bg-gray-700 bg-gray-300 hover:bg-gray-400 text-sm"
-                    @click="clearLogs">Clear Logs</button>
+        <section class="logs-panel">
+            <div class="logs-panel-header">
+                <div>
+                    <p class="panel-kicker">Event stream</p>
+                    <h2>Logs</h2>
+                </div>
+                <button class="clear-logs-btn" @click="clearLogs">Clear</button>
             </div>
 
-            <div class="max-h-64 overflow-y-auto p-2 rounded">
-                <!-- <div v-if="logs.length === 0" class="text-gray-400">No logs available.</div>
-                <ul v-else class="list-none">
-                    <li v-for="(log, index) in logs" :key="index" class="text-sm text-gray-400">{{ log }}</li>
-                </ul> -->
-                <div v-if="logs.length === 0" class="text-gray-400">No logs available.</div>
-                <ul v-else class="list-none">
-                    <li v-for="(log, index) in logs" :key="index" class="text-sm">
-                        <span class="text-gray-500">[{{ new Date(log.timestamp).toLocaleString() }}]</span>
-                        <span :class="{
-                            'text-blue-400': log.type === 'info',
-                            'text-red-400': log.type === 'error',
-                            'text-yellow-400': log.type === 'warning',
-                            'text-green-400': log.type === 'debug'
-                        }">
+            <div class="logs-list">
+                <div v-if="logs.length === 0" class="empty-log">No logs available.</div>
+                <ul v-else>
+                    <li v-for="(log, index) in logs" :key="index" class="log-row">
+                        <span class="log-time">[{{ new Date(log.timestamp).toLocaleString() }}]</span>
+                        <span
+                            class="log-type"
+                            :class="{
+                                info: log.type === 'info',
+                                error: log.type === 'error',
+                                warning: log.type === 'warning',
+                                debug: log.type === 'debug'
+                            }"
+                        >
                             [{{ log.type.toUpperCase() }}]
                         </span>
-                        <span class="ml-1">{{ log.message }}</span>
+                        <span class="log-message">{{ log.message }}</span>
                     </li>
                 </ul>
             </div>
-
-
-        </div>
+        </section>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { invoke } from '@tauri-apps/api/core';
 import { emit } from '@tauri-apps/api/event';
 import { useGlobalState } from '@/composables/app-state';
@@ -56,10 +66,9 @@ const ActivityKind = {
 
 const isConnected = ref(false);
 
-const { logs, addLog, clearLogs } = useGlobalState();
+const { logs, clearLogs } = useGlobalState();
 
 function discordTest() {
-
     const appIdCode = '1361728268088381706';
 
     if (isConnected.value) {
@@ -73,7 +82,6 @@ function discordTest() {
         activity_json: JSON.stringify({
             app_id: appIdCode,
             details: 'Jhabol',
-            // details: 'xmonad -> dwm -> spectrwm -> i3 -> bspwm -> qtile -> hyrpland -> xfce -> gnome -> sway',
             state: "/jhabol",
             activity_kind: ActivityKind.Watching,
             timestamp: createAgoTimestamp('1h 30m')
@@ -83,8 +91,6 @@ function discordTest() {
     isConnected.value = true;
 }
 
-// function to create timestamp behind current time.
-// example: input is `4h 30m` means timestamp should start from 4 hours and 30 minutes behind current time.
 function createAgoTimestamp(input: string) {
     const time = input.split(' ');
     let hours = 0;
@@ -104,12 +110,203 @@ function createAgoTimestamp(input: string) {
 
     return Math.floor(date.getTime() / 1000);
 }
-
-
-onMounted(() => {
-
-})
-
 </script>
 
-<style scoped></style>
+<style scoped>
+.diagnostics-page {
+    width: min(100%, 1180px);
+    margin: 0 auto;
+    padding: 2rem clamp(1rem, 2.2vw, 2rem);
+    color: #fafafa;
+}
+
+.diagnostics-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding: clamp(1.35rem, 2.5vw, 2rem);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 8px;
+    background:
+        radial-gradient(circle at 84% 16%, rgba(153, 255, 0, 0.14), transparent 18rem),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018));
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(18px);
+}
+
+.diagnostics-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 0.85rem;
+    color: rgba(250, 250, 250, 0.62);
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.diagnostics-eyebrow span {
+    width: 2.6rem;
+    height: 1px;
+    background: #99ff00;
+    box-shadow: 0 0 16px rgba(153, 255, 0, 0.55);
+}
+
+.diagnostics-hero h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 4vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1;
+}
+
+.discord-test-btn,
+.clear-logs-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 40px;
+    padding: 0 1rem;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    color: #0a0a0b;
+    background: #99ff00;
+    box-shadow: 0 0 20px rgba(153, 255, 0, 0.24);
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.discord-test-btn.connected {
+    color: #ffffff;
+    background: linear-gradient(135deg, #ff6b6b, #d94848);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.24);
+}
+
+.btn-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.65;
+}
+
+.logs-panel {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 8px;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.018)),
+        rgba(10, 10, 11, 0.62);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(18px);
+}
+
+.logs-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.panel-kicker {
+    margin: 0 0 0.25rem;
+    color: #99ff00;
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.64rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.logs-panel h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.clear-logs-btn {
+    min-height: 34px;
+    color: rgba(250, 250, 250, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: none;
+}
+
+.logs-list {
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.logs-list ul {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.log-row,
+.empty-log {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.76rem;
+}
+
+.log-time {
+    color: rgba(250, 250, 250, 0.42);
+}
+
+.log-type {
+    margin-left: 0.5rem;
+    font-weight: 800;
+}
+
+.log-type.info {
+    color: #8bdcff;
+}
+
+.log-type.error {
+    color: #ff8a8a;
+}
+
+.log-type.warning {
+    color: #ffd166;
+}
+
+.log-type.debug {
+    color: #99ff00;
+}
+
+.log-message {
+    margin-left: 0.5rem;
+    color: rgba(250, 250, 250, 0.76);
+}
+
+.empty-log {
+    color: rgba(250, 250, 250, 0.48);
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .diagnostics-hero {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .discord-test-btn {
+        width: 100%;
+    }
+}
+</style>

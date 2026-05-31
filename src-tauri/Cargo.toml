@@ -1,5 +1,5 @@
 [package]
-name = "discord-quest-completer"
+name = "efexis"
 version = "25.10.7"
 description = "A Tauri App"
 authors = ["you"]

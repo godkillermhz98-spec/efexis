@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efexis — Automated Quest Completion Tool</title>
+    <meta name="description" content="Efexis automates your Discord quests with intelligent detection, seamless completion, and optimized performance. Save time, earn rewards, effortlessly.">
+    <meta name="keywords" content="Efexis, Discord automation, quest completion, Discord bot, auto quest, Discord rewards">
+    <meta name="author" content="Efexis">
+    <meta name="theme-color" content="#0A0A0B">
+    <meta property="og:title" content="Efexis — Automated Quest Completion Tool">
+    <meta property="og:description" content="Automate Discord quests with intelligent detection and seamless completion. Premium automation for maximum rewards.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="assets/images/efexis-logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Film Grain Overlay -->
+    <div class="grain" aria-hidden="true"></div>
+    <div class="page-progress" aria-hidden="true"><span></span></div>
+    <div class="ambient-system" aria-hidden="true">
+        <span class="ambient-ring ambient-ring--one"></span>
+        <span class="ambient-ring ambient-ring--two"></span>
+        <span class="ambient-beam ambient-beam--one"></span>
+        <span class="ambient-beam ambient-beam--two"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" aria-label="Primary">
+        <div class="nav-inner">
+            <a class="nav-brand" aria-label="Efexis home" href="#">
+                <span class="brand-logo-shell">
+                    <img src="assets/images/efexis-logo.svg" alt="" class="brand-logo-img">
+                </span>
+                <span class="brand-name">Efexis</span>
+            </a>
+            <div class="nav-status" aria-hidden="true">
+                <span class="nav-status-dot"></span>
+                <span>Automation online</span>
+            </div>
+            <button type="button" class="shiny-cta shiny-cta--compact" data-cta="nav-start" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                <span>Get Started&nbsp;&nbsp;→</span>
+            </button>
+            <button type="button" id="burgerBtn" class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
+        <div class="menu-overlay-inner">
+            <a href="#features" class="menu-link" style="--i:0">Features</a>
+            <a href="#about" class="menu-link" style="--i:1">About</a>
+            <a href="#process" class="menu-link" style="--i:2">Process</a>
+            <a href="#faq" class="menu-link" style="--i:3">FAQ</a>
+            <a href="#contact" class="menu-link" style="--i:4">Contact</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- ==================== HERO ==================== -->
+        <header class="hero" id="home">
+            <canvas class="hero-network" id="heroNetwork" aria-hidden="true"></canvas>
+            <div class="hero-bg">
+                <img alt="Efexis animated atmospheric background" fetchpriority="high" class="hero-bg-image" src="assets/images/hero-bg-animated.gif">
+                <div class="hero-bg-light" aria-hidden="true"></div>
+                <div class="hero-bg-light-2" aria-hidden="true"></div>
+                <div class="hero-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="hero-orbitals" aria-hidden="true">
+                <span class="hero-orbit hero-orbit--one"></span>
+                <span class="hero-orbit hero-orbit--two"></span>
+                <span class="hero-orbit hero-orbit--three"></span>
+                <span class="hero-chip hero-chip--one">SCAN</span>
+                <span class="hero-chip hero-chip--two">SYNC</span>
+                <span class="hero-chip hero-chip--three">QUEUE</span>
+            </div>
+            <div class="hero-hud hero-hud-left reveal" aria-hidden="true">
+                <span class="hud-kicker">Signal</span>
+                <strong>98.7%</strong>
+                <span>quest match confidence</span>
+            </div>
+            <div class="hero-hud hero-hud-right reveal" aria-hidden="true">
+                <span class="hud-kicker">Queue</span>
+                <strong>24ms</strong>
+                <span>average response window</span>
+            </div>
+            <div class="hero-content">
+                <p class="hero-eyebrow">
+                    <span class="eyebrow-bar" aria-hidden="true"></span>
+                    <span class="eyebrow-tag">[01]</span>Quest Automation Tool
+                </p>
+                <h1 class="hero-title">
+                    <span class="word" style="--i:0">We</span>
+                    <span class="word" style="--i:1">automate</span>
+                    <span class="word" style="--i:2"><em class="hero-word-em">Discord</em></span>
+                    <span class="word" style="--i:3"><em class="hero-word-em">quests<svg class="hero-word-underline" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 Q 45 2 95 7 T 197 9" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="100"></path></svg></em></span>
+                    <span class="word" style="--i:4">for</span>
+                    <span class="word" style="--i:5"><em class="hero-word-em">maximum<svg class="hero-word-underline" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 Q 45 2 95 7 T 197 9" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="100"></path></svg></em></span>
+                    <span class="word" style="--i:6">rewards.</span>
+                </h1>
+                <p class="hero-sub">Intelligent quest detection, seamless completion, and optimized performance — automation built for Discord power users.</p>
+                <div class="hero-actions">
+                    <button type="button" class="shiny-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                        <span>Start automating&nbsp;&nbsp;→</span>
+                    </button>
+                    <a href="#features" class="btn btn-secondary">
+                        <span class="btn-dot" aria-hidden="true"></span>
+                        <span>Explore features</span>
+                    </a>
+                </div>
+                <div class="hero-stats" aria-label="Key metrics">
+                    <div class="hero-stat hero-review-stat">
+                        <div class="hero-review-carousel" aria-label="Featured customer reviews">
+                            <article class="hero-review-slide is-active">
+                                <img src="assets/images/Pfp of customers/Dr Sagar asthana.jpg" alt="" class="hero-review-avatar">
+                                <div class="hero-review-copy">
+                                    <div class="hero-review-topline">
+                                        <strong>Doctor Sagar Asthana</strong>
+                                        <span class="star-rating" aria-label="5 out of 5 stars">
+                                            <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                        </span>
+                                    </div>
+                                    <span class="hero-review-role">Healthcare entrepreneur, Lucknow private clinic</span>
+                                    <p>I wanted the latest Discord game rewards without downloading a 70GB game. Efexis generated a tiny dummy file and Discord detected it instantly.</p>
+                                </div>
+                            </article>
+                            <article class="hero-review-slide">
+                                <img src="assets/images/Pfp of customers/Grace maharjan.jpg" alt="" class="hero-review-avatar">
+                                <div class="hero-review-copy">
+                                    <div class="hero-review-topline">
+                                        <strong>Grace Maharjan</strong>
+                                        <span class="star-rating" aria-label="5 out of 5 stars">
+                                            <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                        </span>
+                                    </div>
+                                    <span class="hero-review-role">Student</span>
+                                    <p>I wanted a weapon skin reward, but I refuse to install intrusive anti-cheats. This let me simulate game presence cleanly.</p>
+                                </div>
+                            </article>
+                            <article class="hero-review-slide">
+                                <img src="assets/images/Pfp of customers/James shakya.jpg" alt="" class="hero-review-avatar">
+                                <div class="hero-review-copy">
+                                    <div class="hero-review-topline">
+                                        <strong>James Shakya</strong>
+                                        <span class="star-rating" aria-label="4.5 out of 5 stars">
+                                            <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-half"></span>
+                                        </span>
+                                    </div>
+                                    <span class="hero-review-role">Aspiring software developer</span>
+                                    <p>Fantastic tool. Just do not extract it into Program Files; use a custom folder and it runs smoothly on Windows 11.</p>
+                                </div>
+                            </article>
+                            <article class="hero-review-slide">
+                                <img src="assets/images/Pfp of customers/Rehan maharjan.jpg" alt="" class="hero-review-avatar">
+                                <div class="hero-review-copy">
+                                    <div class="hero-review-topline">
+                                        <strong>Rehan Maharjan</strong>
+                                        <span class="star-rating" aria-label="4 out of 5 stars">
+                                            <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-empty"></span>
+                                        </span>
+                                    </div>
+                                    <span class="hero-review-role">Student and part-time data specialist</span>
+                                    <p>The Windows app is solid and lightweight. I hope Linux compatibility arrives soon, because Wine is not ideal with WebView2.</p>
+                                </div>
+                            </article>
+                        </div>
+                        <a href="#reviews" class="hero-review-link">Check other reviews</a>
+                    </div>
+                    <span class="hero-stat-sep" aria-hidden="true"></span>
+                    <div class="hero-stat">
+                        <span class="hero-stat-icon" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.6"></circle><path d="M2 20.5v-1.5a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v1.5"></path><circle cx="17.5" cy="7.5" r="2.6"></circle><path d="M22 19.5v-1a3.5 3.5 0 0 0-3-3.45"></path></svg>
+                        </span>
+                        <span class="hero-stat-num" data-count="10000" data-suffix="+">0</span>
+                        <span class="hero-stat-label">Quests completed</span>
+                    </div>
+                    <span class="hero-stat-sep" aria-hidden="true"></span>
+                    <div class="hero-stat">
+                        <span class="hero-stat-icon" aria-hidden="true">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.5"><path d="M13.5 2L4 13.5h7L9.5 22 20 10.5h-7L13.5 2z"></path></svg>
+                        </span>
+                        <span class="hero-stat-num">99%</span>
+                        <span class="hero-stat-label">Success rate</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== SIGNAL STRIP ==================== -->
+        <section class="signal-strip" aria-label="Automation highlights">
+            <div class="signal-track">
+                <span>Quest detection</span>
+                <span>Priority queue</span>
+                <span>Native desktop builds</span>
+                <span>Automatic updates</span>
+                <span>Reward reporting</span>
+                <span>Low-friction setup</span>
+                <span>Quest detection</span>
+                <span>Priority queue</span>
+                <span>Native desktop builds</span>
+                <span>Automatic updates</span>
+                <span>Reward reporting</span>
+                <span>Low-friction setup</span>
+            </div>
+        </section>
+
+        <!-- ==================== FEATURES / SERVICES ==================== -->
+        <section class="expertise" id="features">
+            <div class="expertise-bg" aria-hidden="true">
+                <div style="position:relative;height:100%;width:100%;overflow:hidden;background:radial-gradient(circle at 50% 30%, rgba(153,255,0,0.12), transparent 58%)"></div>
+            </div>
+            <div class="expertise-overlay" aria-hidden="true"></div>
+            <div class="expertise-inner">
+                <header class="expertise-head">
+                    <p class="expertise-eyebrow reveal">
+                        <span class="eyebrow-bar" aria-hidden="true"></span>
+                        <span class="eyebrow-tag">[02]</span>Features / What it does
+                    </p>
+                    <h2 class="expertise-title reveal">Four <em>core capabilities.</em> One tool.</h2>
+                </header>
+                <div class="expertise-grid">
+                    <article class="service-card reveal reveal-delay-1">
+                        <span class="service-card-accent" aria-hidden="true"></span>
+                        <span class="service-card-watermark" aria-hidden="true">01</span>
+                        <header class="service-head">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </header>
+                        <div class="service-body">
+                            <h3 class="service-title">
+                                <span class="text-roll" aria-label="Quest Detection">
+                                    <span class="text-roll-row"><span class="text-roll-letter" style="--i:0">Q</span><span class="text-roll-letter" style="--i:1">u</span><span class="text-roll-letter" style="--i:2">e</span><span class="text-roll-letter" style="--i:3">s</span><span class="text-roll-letter" style="--i:4">t</span><span class="text-roll-letter" style="--i:5">&nbsp;</span><span class="text-roll-letter" style="--i:6">D</span><span class="text-roll-letter" style="--i:7">e</span><span class="text-roll-letter" style="--i:8">t</span><span class="text-roll-letter" style="--i:9">e</span><span class="text-roll-letter" style="--i:10">c</span><span class="text-roll-letter" style="--i:11">t</span><span class="text-roll-letter" style="--i:12">i</span><span class="text-roll-letter" style="--i:13">o</span><span class="text-roll-letter" style="--i:14">n</span></span>
+                                    <span class="text-roll-row text-roll-clone" aria-hidden="true"><span class="text-roll-letter" style="--i:0">Q</span><span class="text-roll-letter" style="--i:1">u</span><span class="text-roll-letter" style="--i:2">e</span><span class="text-roll-letter" style="--i:3">s</span><span class="text-roll-letter" style="--i:4">t</span><span class="text-roll-letter" style="--i:5">&nbsp;</span><span class="text-roll-letter" style="--i:6">D</span><span class="text-roll-letter" style="--i:7">e</span><span class="text-roll-letter" style="--i:8">t</span><span class="text-roll-letter" style="--i:9">e</span><span class="text-roll-letter" style="--i:10">c</span><span class="text-roll-letter" style="--i:11">t</span><span class="text-roll-letter" style="--i:12">i</span><span class="text-roll-letter" style="--i:13">o</span><span class="text-roll-letter" style="--i:14">n</span></span>
+                                </span>
+                            </h3>
+                            <p class="service-desc">Automatically identify and detect available Discord quests the moment they appear. Never miss a reward opportunity again — our scanner monitors continuously.</p>
+                            <div class="service-tags">
+                                <span class="service-tag">Real-time Scanning</span>
+                                <span class="service-tag">Smart Filters</span>
+                                <span class="service-tag">Notifications</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="service-card reveal reveal-delay-2">
+                        <span class="service-card-accent" aria-hidden="true"></span>
+                        <span class="service-card-watermark" aria-hidden="true">02</span>
+                        <header class="service-head">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
+                            </svg>
+                        </header>
+                        <div class="service-body">
+                            <h3 class="service-title">
+                                <span class="text-roll" aria-label="Auto-Completion">
+                                    <span class="text-roll-row"><span class="text-roll-letter" style="--i:0">A</span><span class="text-roll-letter" style="--i:1">u</span><span class="text-roll-letter" style="--i:2">t</span><span class="text-roll-letter" style="--i:3">o</span><span class="text-roll-letter" style="--i:4">-</span><span class="text-roll-letter" style="--i:5">C</span><span class="text-roll-letter" style="--i:6">o</span><span class="text-roll-letter" style="--i:7">m</span><span class="text-roll-letter" style="--i:8">p</span><span class="text-roll-letter" style="--i:9">l</span><span class="text-roll-letter" style="--i:10">e</span><span class="text-roll-letter" style="--i:11">t</span><span class="text-roll-letter" style="--i:12">i</span><span class="text-roll-letter" style="--i:13">o</span><span class="text-roll-letter" style="--i:14">n</span></span>
+                                    <span class="text-roll-row text-roll-clone" aria-hidden="true"><span class="text-roll-letter" style="--i:0">A</span><span class="text-roll-letter" style="--i:1">u</span><span class="text-roll-letter" style="--i:2">t</span><span class="text-roll-letter" style="--i:3">o</span><span class="text-roll-letter" style="--i:4">-</span><span class="text-roll-letter" style="--i:5">C</span><span class="text-roll-letter" style="--i:6">o</span><span class="text-roll-letter" style="--i:7">m</span><span class="text-roll-letter" style="--i:8">p</span><span class="text-roll-letter" style="--i:9">l</span><span class="text-roll-letter" style="--i:10">e</span><span class="text-roll-letter" style="--i:11">t</span><span class="text-roll-letter" style="--i:12">i</span><span class="text-roll-letter" style="--i:13">o</span><span class="text-roll-letter" style="--i:14">n</span></span>
+                                </span>
+                            </h3>
+                            <p class="service-desc">Seamlessly complete quests without manual intervention. Our intelligent automation adapts to each quest type and handles everything in the background.</p>
+                            <div class="service-tags">
+                                <span class="service-tag">Zero Effort</span>
+                                <span class="service-tag">Background Processing</span>
+                                <span class="service-tag">Adaptive</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="service-card reveal reveal-delay-3">
+                        <span class="service-card-accent" aria-hidden="true"></span>
+                        <span class="service-card-watermark" aria-hidden="true">03</span>
+                        <header class="service-head">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </header>
+                        <div class="service-body">
+                            <h3 class="service-title">
+                                <span class="text-roll" aria-label="Speed Optimization">
+                                    <span class="text-roll-row"><span class="text-roll-letter" style="--i:0">S</span><span class="text-roll-letter" style="--i:1">p</span><span class="text-roll-letter" style="--i:2">e</span><span class="text-roll-letter" style="--i:3">e</span><span class="text-roll-letter" style="--i:4">d</span><span class="text-roll-letter" style="--i:5">&nbsp;</span><span class="text-roll-letter" style="--i:6">O</span><span class="text-roll-letter" style="--i:7">p</span><span class="text-roll-letter" style="--i:8">t</span><span class="text-roll-letter" style="--i:9">i</span><span class="text-roll-letter" style="--i:10">m</span><span class="text-roll-letter" style="--i:11">i</span><span class="text-roll-letter" style="--i:12">z</span><span class="text-roll-letter" style="--i:13">a</span><span class="text-roll-letter" style="--i:14">t</span><span class="text-roll-letter" style="--i:15">i</span><span class="text-roll-letter" style="--i:16">o</span><span class="text-roll-letter" style="--i:17">n</span></span>
+                                    <span class="text-roll-row text-roll-clone" aria-hidden="true"><span class="text-roll-letter" style="--i:0">S</span><span class="text-roll-letter" style="--i:1">p</span><span class="text-roll-letter" style="--i:2">e</span><span class="text-roll-letter" style="--i:3">e</span><span class="text-roll-letter" style="--i:4">d</span><span class="text-roll-letter" style="--i:5">&nbsp;</span><span class="text-roll-letter" style="--i:6">O</span><span class="text-roll-letter" style="--i:7">p</span><span class="text-roll-letter" style="--i:8">t</span><span class="text-roll-letter" style="--i:9">i</span><span class="text-roll-letter" style="--i:10">m</span><span class="text-roll-letter" style="--i:11">i</span><span class="text-roll-letter" style="--i:12">z</span><span class="text-roll-letter" style="--i:13">a</span><span class="text-roll-letter" style="--i:14">t</span><span class="text-roll-letter" style="--i:15">i</span><span class="text-roll-letter" style="--i:16">o</span><span class="text-roll-letter" style="--i:17">n</span></span>
+                                </span>
+                            </h3>
+                            <p class="service-desc">Optimized performance ensures quests are completed faster than manual methods. Our advanced queuing system prioritizes high-value rewards first.</p>
+                            <div class="service-tags">
+                                <span class="service-tag">Priority Queue</span>
+                                <span class="service-tag">Fast Execution</span>
+                                <span class="service-tag">Efficient</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="service-card reveal reveal-delay-4">
+                        <span class="service-card-accent" aria-hidden="true"></span>
+                        <span class="service-card-watermark" aria-hidden="true">04</span>
+                        <header class="service-head">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </header>
+                        <div class="service-body">
+                            <h3 class="service-title">
+                                <span class="text-roll" aria-label="Cross-Platform">
+                                    <span class="text-roll-row"><span class="text-roll-letter" style="--i:0">C</span><span class="text-roll-letter" style="--i:1">r</span><span class="text-roll-letter" style="--i:2">o</span><span class="text-roll-letter" style="--i:3">s</span><span class="text-roll-letter" style="--i:4">s</span><span class="text-roll-letter" style="--i:5">-</span><span class="text-roll-letter" style="--i:6">P</span><span class="text-roll-letter" style="--i:7">l</span><span class="text-roll-letter" style="--i:8">a</span><span class="text-roll-letter" style="--i:9">t</span><span class="text-roll-letter" style="--i:10">f</span><span class="text-roll-letter" style="--i:11">o</span><span class="text-roll-letter" style="--i:12">r</span><span class="text-roll-letter" style="--i:13">m</span></span>
+                                    <span class="text-roll-row text-roll-clone" aria-hidden="true"><span class="text-roll-letter" style="--i:0">C</span><span class="text-roll-letter" style="--i:1">r</span><span class="text-roll-letter" style="--i:2">o</span><span class="text-roll-letter" style="--i:3">s</span><span class="text-roll-letter" style="--i:4">s</span><span class="text-roll-letter" style="--i:5">-</span><span class="text-roll-letter" style="--i:6">P</span><span class="text-roll-letter" style="--i:7">l</span><span class="text-roll-letter" style="--i:8">a</span><span class="text-roll-letter" style="--i:9">t</span><span class="text-roll-letter" style="--i:10">f</span><span class="text-roll-letter" style="--i:11">o</span><span class="text-roll-letter" style="--i:12">r</span><span class="text-roll-letter" style="--i:13">m</span></span>
+                                </span>
+                            </h3>
+                            <p class="service-desc">Works seamlessly across Windows, macOS, and Linux with native support for each platform. Automatic updates keep you on the latest version.</p>
+                            <div class="service-tags">
+                                <span class="service-tag">Windows</span>
+                                <span class="service-tag">macOS</span>
+                                <span class="service-tag">Linux</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABOUT / STATS ==================== -->
+        <section class="about-section" id="about">
+            <div class="about-inner">
+                <p class="about-eyebrow reveal">
+                    <span class="eyebrow-bar" aria-hidden="true"></span>
+                    <span class="eyebrow-tag">[03]</span>About / Our Mission
+                </p>
+                <h2 class="about-title reveal">Why <em>Efexis</em> exists.</h2>
+                <p class="about-desc reveal">Efexis is a premium automation tool designed to help Discord users efficiently complete server quests. Our mission is to provide seamless, reliable, and fast quest completion without the hassle of manual effort. Built with modern technology and optimized for performance, we ensure your quest rewards are earned with minimal configuration and maximum results.</p>
+
+                <div class="about-console reveal">
+                    <div class="console-header">
+                        <span>Runtime snapshot</span>
+                        <strong>Live</strong>
+                    </div>
+                    <div class="console-grid">
+                        <div>
+                            <span>Monitor</span>
+                            <strong>Continuous</strong>
+                        </div>
+                        <div>
+                            <span>Handling</span>
+                            <strong>Adaptive</strong>
+                        </div>
+                        <div>
+                            <span>Updates</span>
+                            <strong>Automatic</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-stats">
+                    <div class="about-stat-card reveal reveal-delay-1">
+                        <span class="about-stat-num" data-count="10000" data-suffix="+">0</span>
+                        <span class="about-stat-label">Quests Completed</span>
+                    </div>
+                    <div class="about-stat-card reveal reveal-delay-2">
+                        <span class="about-stat-num" data-count="5000" data-suffix="+">0</span>
+                        <span class="about-stat-label">Users Helped</span>
+                    </div>
+                    <div class="about-stat-card reveal reveal-delay-3">
+                        <span class="about-stat-num" data-count="99" data-suffix="%">0</span>
+                        <span class="about-stat-label">Success Rate</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PROCESS ==================== -->
+        <section class="process" id="process">
+            <div class="process-inner">
+                <header class="process-head">
+                    <p class="process-eyebrow reveal">
+                        <span class="eyebrow-bar" aria-hidden="true"></span>
+                        <span class="eyebrow-tag">[04]</span>Workflow / How it works
+                    </p>
+                    <h2 class="process-title reveal">Simple <em>process.</em> Real results.</h2>
+                </header>
+                <div class="process-grid">
+                    <article class="process-card reveal reveal-delay-1">
+                        <div class="process-num">A</div>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="process-icon">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <h3 class="process-card-title">Detection</h3>
+                        <p class="process-card-desc">Our system continuously monitors your Discord for new quests and opportunities the moment they appear.</p>
+                    </article>
+                    <article class="process-card reveal reveal-delay-2">
+                        <div class="process-num">B</div>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="process-icon">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        <h3 class="process-card-title">Automation</h3>
+                        <p class="process-card-desc">Detected quests are queued for automated processing with intelligent priority handling based on rewards.</p>
+                    </article>
+                    <article class="process-card reveal reveal-delay-3">
+                        <div class="process-num">C</div>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="process-icon">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <h3 class="process-card-title">Completion</h3>
+                        <p class="process-card-desc">Quests are completed automatically using optimized algorithms tailored specifically for Discord's requirements.</p>
+                    </article>
+                    <article class="process-card reveal reveal-delay-4">
+                        <div class="process-num">D</div>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="process-icon">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <h3 class="process-card-title">Rewards</h3>
+                        <p class="process-card-desc">Earn your rewards automatically with detailed completion reports and full transparency on every quest.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FAQ ==================== -->
+        <section class="faq" id="faq">
+            <div class="faq-inner">
+                <header class="faq-head">
+                    <p class="faq-eyebrow reveal">
+                        <span class="eyebrow-bar" aria-hidden="true"></span>
+                        <span class="eyebrow-tag">[05]</span>FAQ / Common questions
+                    </p>
+                    <h2 class="faq-title reveal">Frequently asked <em>questions.</em></h2>
+                </header>
+                <ul class="faq-list">
+                    <li class="faq-item reveal">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Is Efexis safe to use?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, our tool uses legitimate methods to interact with quests. We prioritize account security and never store sensitive information. Your account safety is our top concern.</p>
+                        </div>
+                    </li>
+                    <li class="faq-item reveal reveal-delay-1">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>How long does quest completion take?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Most quests are completed within minutes, depending on their requirements and availability. Our system processes quests efficiently in the background while you do other things.</p>
+                        </div>
+                    </li>
+                    <li class="faq-item reveal reveal-delay-2">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Do I need technical knowledge to use it?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>No. The tool is designed for users of all skill levels with a simple and intuitive interface. Setup takes less than 5 minutes — download, configure, and let it run.</p>
+                        </div>
+                    </li>
+                    <li class="faq-item reveal reveal-delay-3">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>What platforms are supported?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We support Windows, macOS, and Linux with native builds for each operating system. All platforms receive automatic updates to ensure compatibility.</p>
+                        </div>
+                    </li>
+                    <li class="faq-item reveal reveal-delay-4">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>How often is the tool updated?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We release updates bi-weekly to ensure compatibility with Discord's latest changes and to add new features based on user feedback. Updates are applied automatically.</p>
+                        </div>
+                    </li>
+                    <li class="faq-item reveal reveal-delay-4">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Can I configure quest priorities?</h3>
+                            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes. Our dashboard allows you to set custom priorities for different quest types and reward values to maximize your benefits. Full control is in your hands.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== REVIEWS ==================== -->
+        <section class="reviews-section" id="reviews">
+            <div class="reviews-bg" aria-hidden="true"></div>
+            <div class="reviews-inner">
+                <header class="reviews-head">
+                    <p class="reviews-eyebrow reveal">
+                        <span class="eyebrow-bar" aria-hidden="true"></span>
+                        <span class="eyebrow-tag">[06]</span>Reviews / Community feedback
+                    </p>
+                    <h2 class="reviews-title reveal">Trusted by <em>quest hunters.</em></h2>
+                    <p class="reviews-desc reveal">Featured testimonials are shown first, followed by generated community-style feedback samples that reflect common Efexis use cases.</p>
+                </header>
+
+                <div class="featured-reviews">
+                    <article class="review-card featured-review reveal reveal-delay-1">
+                        <img src="assets/images/Pfp of customers/Dr Sagar asthana.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Doctor Sagar Asthana</h3>
+                                    <p>A healthcare entrepreneur located in Lucknow (private clinic)</p>
+                                </div>
+                                <span class="star-rating" aria-label="5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">I wanted to get the latest Discord game rewards, but my SSD is completely full and I couldn't download a 70GB game just to play for 15 minutes. This app worked perfectly. It generated a tiny 250kb dummy file, Discord detected it instantly, and I got my quest reward hassle-free. Brilliant tool!</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-2">
+                        <img src="assets/images/Pfp of customers/Grace maharjan.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Grace Maharjan</h3>
+                                    <p>Currently a student</p>
+                                </div>
+                                <span class="star-rating" aria-label="5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">I really wanted a weapon skin reward from a new quest, but I refuse to install games that use intrusive, kernel-level anti-cheats on my PC. This tool let me simulate the game presence without installing any questionable software. Super lightweight and clean.</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-3">
+                        <img src="assets/images/Pfp of customers/James shakya.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>James Shakya</h3>
+                                    <p>Aspiring software developer</p>
+                                </div>
+                                <span class="star-rating" aria-label="4.5 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-half"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">Fantastic tool that does exactly what it says. Just a heads up for anyone downloading it: don't extract the folder into C:\Program Files\ or it will throw errors because it needs write permissions to create the dummy game files. Once I moved it to a custom folder, it worked smoothly on Windows 11.</p>
+                        </div>
+                    </article>
+
+                    <article class="review-card featured-review reveal reveal-delay-4">
+                        <img src="assets/images/Pfp of customers/Rehan maharjan.jpg" alt="" class="review-avatar">
+                        <div class="review-card-body">
+                            <div class="review-card-head">
+                                <div>
+                                    <h3>Rehan Maharjan</h3>
+                                    <p>Student and part-time data specialist for CloudFactory</p>
+                                </div>
+                                <span class="star-rating" aria-label="4 out of 5 stars">
+                                    <span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-full"></span><span class="star star-empty"></span>
+                                </span>
+                            </div>
+                            <p class="review-text">The Windows application is solid and the Tauri/Rust tech stack makes it incredibly lightweight. However, I dual-boot into Linux and it's a bummer that it isn't supported here yet. Trying to run it through Wine is a pain because of the WebView2 dependency. Hoping the dev figures out Linux compatibility soon!</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="reviews-wall-head reveal">
+                    <span>Community-style feedback</span>
+                    <strong>120 review samples</strong>
+                </div>
+                <div class="reviews-wall" id="communityReviewGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT / CTA ==================== -->
+        <section class="cta-section" id="contact">
+            <div class="cta-bg" aria-hidden="true"></div>
+            <div class="cta-orbitals" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="cta-inner">
+                <p class="cta-eyebrow reveal">
+                    <span class="eyebrow-bar" aria-hidden="true"></span>
+                    <span class="eyebrow-tag">[07]</span>Contact / Get in touch
+                </p>
+                <h2 class="cta-title reveal">Ready to <em>automate?</em></h2>
+                <p class="cta-desc reveal">Have questions or need assistance? Reach out and we'll get back to you within 24 hours.</p>
+                <div class="cta-metrics reveal" aria-hidden="true">
+                    <span>fast setup</span>
+                    <span>transparent reports</span>
+                    <span>cross-platform</span>
+                </div>
+                <form id="contactForm" class="cta-form reveal" aria-label="Contact form">
+                    <div class="cta-form-row">
+                        <div class="form-field">
+                            <input type="text" id="contactName" name="name" placeholder="Your Name" required aria-required="true">
+                        </div>
+                        <div class="form-field">
+                            <input type="email" id="contactEmail" name="email" placeholder="your@email.com" required aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <input type="text" id="contactSubject" name="subject" placeholder="Subject" required aria-required="true">
+                    </div>
+                    <div class="form-field">
+                        <textarea id="contactMessage" name="message" placeholder="How can we help?" rows="5" required aria-required="true"></textarea>
+                    </div>
+                    <button type="submit" class="shiny-cta cta-submit">
+                        <span>Send message&nbsp;&nbsp;→</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <span class="footer-logo-shell">
+                            <img src="assets/images/efexis-logo.svg" alt="" class="footer-logo-img">
+                        </span>
+                        <span>Efexis</span>
+                    </a>
+                    <p class="footer-desc">Premium Discord quest automation made simple. Save time, earn rewards, and enjoy the experience.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sitemap</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#process">Process</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Efexis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
